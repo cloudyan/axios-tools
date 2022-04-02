@@ -1,0 +1,34 @@
+{
+  "name": "@deepjs/axios-tools",
+  "private": true,
+  "version": "0.0.1",
+  "description": "axios tools",
+  "keywords": [
+    "axios",
+    "tools",
+    "taro",
+    "uniapp",
+    "adapter"
+  ],
+  "main": "./lib/index.js",
+  "module": "./esm/index.js",
+  "types": "./esm/index.d.ts",
+  "sideEffects": false,
+  "scripts": {
+
+  },
+  "files": [
+    "esm",
+    "lib",
+    "dist"
+  ],
+  "dependencies": {
+  },
+  "peerDependencies": {
+  },
+  "devDependencies": {
+
+  },
+  "ava": {
+  }
+}

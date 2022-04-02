@@ -1,0 +1,4 @@
+// declare const uni
+declare module 'axios/lib/core/settle';
+declare module 'axios/lib/core/buildFullPath';
+declare module 'axios/lib/helpers/buildURL';
