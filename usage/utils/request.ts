@@ -1,4 +1,3 @@
-
 /**
  * 业务封装
  *
@@ -6,16 +5,15 @@
  *
  */
 
-import axios, { AxiosRequestConfig } from 'axios'
+import axios, { AxiosRequestConfig } from 'axios';
 // import Taro from '@tarojs/taro';
 // import axiosRetry from 'axios-retry'
 // import jsonpAdapter from 'axios-jsonp'
-import conf from '@/config/index'
+import conf from '@/config/index';
 
 console.log('conf', conf);
 
 // axios.defaults.adapter = createTaroAdapter(Taro.request)
-
 
 // 你的配置
 const instance = axios.create({
@@ -31,7 +29,7 @@ const instance = axios.create({
 
 // 本地调试 H5
 if (process.env.NODE_ENV === 'development') {
-  instance.interceptors.request.use(config => {
+  instance.interceptors.request.use((config) => {
     if (!/^https?/.test(config.url || '')) {
       config.url = [conf.apiPrefix || '', config.url].join('');
     }
@@ -45,7 +43,6 @@ if (process.env.NODE_ENV === 'development') {
 // })
 // 推荐使用函数代替拦截器 ✅
 export async function request(config?: AxiosRequestConfig) {
-
   // 你的业务逻辑封装
   // return instance.request(config)
   //   .then((res) => formatResolveData(res))
@@ -59,13 +56,16 @@ export async function request(config?: AxiosRequestConfig) {
   };
 
   // 兼容各种api返回  返回统一格式
-  await instance.request(config)
+  await instance
+    .request(config)
     .catch((err) => err)
     .then((res) => {
       // 请求成功 读取res
       // 请求失败 读取res?.response
-      console.log('request:')
-      const { data, status, statusText } = res?.isAxiosError ? (res?.response || {}) : res;
+      console.log('request:');
+      const { data, status, statusText } = res?.isAxiosError
+        ? res?.response || {}
+        : res;
 
       formatRes.data = data || {};
       formatRes.code = data?.code || status || -1;
@@ -90,56 +90,55 @@ export async function request(config?: AxiosRequestConfig) {
   // 触发登录
   if (formatRes.code === conf.authCode) {
     // goLogin();
-    return
+    return;
   }
 
   // api 错误提示
   if (formatRes.error && !config.ignoreErrHandle) {
     if (Number(formatRes.data?.errorLevel) === 1) {
       // 触发全局modal显示
-      Taro.eventCenter.trigger(Taro.Current?.page?.route, { msg: formatRes.msg });
-    } else {
-      formatRes?.msg && Taro.showToast({
-        title: formatRes.msg,
-        icon: 'none',
-        mask: true,
+      Taro.eventCenter.trigger(Taro.Current?.page?.route, {
+        msg: formatRes.msg,
       });
+    } else {
+      formatRes?.msg &&
+        Taro.showToast({
+          title: formatRes.msg,
+          icon: 'none',
+          mask: true,
+        });
     }
   }
 
   return formatRes;
 }
 
-
 // export function jsonp(url: string, config?: AxiosRequestConfig) {
 //   return request(url, { ...config, adapter: jsonpAdapter })
 // }
 
-
-const CancelToken = axios.CancelToken
+const CancelToken = axios.CancelToken;
 export function withCancelToken(fetcher) {
-  let abort
+  let abort;
 
   function send(data, config) {
-    cancel() // 主动取消
+    cancel(); // 主动取消
 
-    const cancelToken = new CancelToken(cancel => (abort = cancel))
-    return fetcher(data, { ...config, cancelToken })
+    const cancelToken = new CancelToken((cancel) => (abort = cancel));
+    return fetcher(data, { ...config, cancelToken });
   }
 
   function cancel(message = 'abort') {
     if (abort) {
-      abort(message)
-      abort = null
+      abort(message);
+      abort = null;
     }
   }
 
-  return [send, cancel]
+  return [send, cancel];
 }
 
-export default instance
-
-
+export default instance;
 
 // 实现版本控制
 // instance.interceptors.request.use(config => {

@@ -1,4 +1,3 @@
-
 type ENVKey = 'local' | 'dev' | 'sit' | 'prod';
 type ENVConfig = {
   [key in ENVKey]: {
@@ -24,7 +23,8 @@ const baseEnv = {
     desc: '大额优惠等你来',
     imageUrl: '',
   },
-  utm: { // utm 参数
+  utm: {
+    // utm 参数
     // channel: config.channel,
     source: '',
     media: '',
@@ -44,7 +44,8 @@ const ENV: ENVConfig = {
     apiBaseUrl: 'https://m.sit.xxx.com',
     trackUrl: 'https://m.sit.xxx.com',
   },
-  dev: { // dev 尚未支持
+  dev: {
+    // dev 尚未支持
     baseUrl: 'https://m.dev.xxx.com',
     apiBaseUrl: 'https://m.dev.xxx.com',
     trackUrl: 'https://m.dev.xxx.com',
@@ -77,4 +78,3 @@ function createEnv(current: ENVKey = 'prod') {
 const envResult = createEnv(apiEnv);
 
 export default envResult;
-

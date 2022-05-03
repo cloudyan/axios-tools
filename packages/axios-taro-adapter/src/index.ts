@@ -1,4 +1,3 @@
-
 // https://github.com/axios/axios/blob/master/lib/adapters/README.md#axios--adapters
 // https://taro-docs.jd.com/taro/docs/apis/network/request/
 
@@ -7,17 +6,17 @@ import {
   AxiosRequestConfig,
   AxiosPromise,
   // AxiosResponse,
-} from 'axios'
+} from 'axios';
 
 // import utils from 'axios/lib/utils'
-import settle from 'axios/lib/core/settle'
+// import settle from 'axios/lib/core/settle';
 // import cookies from 'axios/lib/helpers/cookies'
-import buildURL from 'axios/lib/helpers/buildURL'
-import buildFullPath from 'axios/lib/core/buildFullPath'
+import buildURL from 'axios/lib/helpers/buildURL';
+import buildFullPath from 'axios/lib/core/buildFullPath';
 // import parseHeaders from 'axios/lib/helpers/parseHeaders'
 // import isURLSameOrigin from 'axios/lib/helpers/isURLSameOrigin'
 // import transitionalDefaults from 'axios/lib/defaults/transitional'
-import AxiosError from 'axios/lib/core/AxiosError'
+import AxiosError from 'axios/lib/core/AxiosError';
 // import CanceledError from 'axios/lib/cancel/CanceledError'
 // import parseProtocol from 'axios/lib/helpers/parseProtocol'
 
@@ -29,19 +28,19 @@ type RequestMethod =
   | 'PUT'
   | 'DELETE'
   | 'TRACE'
-  | 'CONNECT'
+  | 'CONNECT';
 
 interface RequestConfig {
-  dataType: 'json' | any
-  responseType: 'text' | 'arrayBuffer'
-  enableHttp2: boolean
-  enableHttpDNS: boolean
-  enableQuic: boolean
-  enableCache: boolean
+  dataType: 'json' | any;
+  responseType: 'text' | 'arrayBuffer';
+  enableHttp2: boolean;
+  enableHttpDNS: boolean;
+  enableQuic: boolean;
+  enableCache: boolean;
 
   // jsonp: boolean
-  mode: 'same-origin' | 'cors' | 'no-cors' // 仅 H5
-  credentials: 'omit' | 'include' | 'same-origin' // 仅 H5
+  mode: 'same-origin' | 'cors' | 'no-cors'; // 仅 H5
+  credentials: 'omit' | 'include' | 'same-origin'; // 仅 H5
   // retryTimes: number
   // cache: 'default'
 }
@@ -61,25 +60,25 @@ type RequestConfigKeys =
   | 'paramsSerializer'
   | 'transformRequest'
   | 'transformResponse'
-  | 'validateStatus'
+  | 'validateStatus';
 
 export type TaroRequestConfig = Pick<AxiosRequestConfig, RequestConfigKeys> &
-  RequestConfig
+  RequestConfig;
 
 export interface AxiosResponse<T = any> {
-  data: T
-  status: number
-  statusText: string
-  config: TaroRequestConfig
-  headers: any
-  request: any
+  data: T;
+  status: number;
+  statusText: string;
+  config: TaroRequestConfig;
+  headers: any;
+  request: any;
   profile: {
-    [propName: string]: any
-  }
+    [propName: string]: any;
+  };
 }
 
 export default function createAdapter(customRequest: any) {
-  const request = customRequest
+  const request = customRequest;
   return function myAdapter(config: TaroRequestConfig): AxiosPromise {
     // At this point:
     //  - config has been merged with defaults
@@ -90,11 +89,11 @@ export default function createAdapter(customRequest: any) {
     // Upon response settle the Promise
 
     return new Promise(function (resolve, reject) {
-      let requestTask
-      const requestData = config.data
-      const requestHeaders = config.headers
-      const requestMethod = (config.method || 'GET').toUpperCase()
-      const fullPath = buildFullPath(config.baseURL, config.url)
+      // let requestTask;
+      const requestData = config.data;
+      const requestHeaders = config.headers;
+      const requestMethod = (config.method || 'GET').toUpperCase();
+      const fullPath = buildFullPath(config.baseURL, config.url);
 
       const requestOptions = Object.assign({}, config, {
         url: buildURL(fullPath, config.params, config.paramsSerializer),
@@ -102,10 +101,10 @@ export default function createAdapter(customRequest: any) {
         method: requestMethod as RequestMethod,
         header: requestHeaders, // uniapp 使用的 header
         complete: (httpResponse: any) => {
-          console.log('origin taro httpConfig', config)
-          console.log('origin taro httpResponse', httpResponse)
+          console.log('origin taro httpConfig', config);
+          console.log('origin taro httpResponse', httpResponse);
 
-          // net::ERR_PROXY_CONNECTION_FAILED {errMsg: "request:fail "}
+          // net::ERR_PROXY_CONNECTION_FAILED {errMsg: 'request:fail '}
 
           // const status = httpResponse.statusCode || httpResponse.status
           const response = {
@@ -116,46 +115,48 @@ export default function createAdapter(customRequest: any) {
             config: config,
             profile: httpResponse.profile,
             request,
-          } as AxiosResponse
+          } as AxiosResponse;
           settle(resolve, reject, response);
 
           // if ([11, 12, 13, 14, 19, 20].indexOf(err.statusCode) > -1) {}
           // request:fail abort
           // timeout
-          // {status: undefined, statusText: "request:fail "}
+          // {status: undefined, statusText: 'request:fail '}
         },
-      })
+      });
 
-      requestTask = request(requestOptions)
+      const requestTask = request(requestOptions);
 
       // From here:
       //  - response transformers will run
       //  - response interceptors will run
-    })
-  }
+    });
+  };
 }
 
 // 需要确认返回的数据格式
-
 function settle(resolve, reject, response) {
-  var validateStatus = response.config.validateStatus;
+  const validateStatus = response.config.validateStatus;
 
   // TODO: 有可能 response.status 不存在，API 服务不通时
-  if (typeof response.status === 'undefined') {
-
-  }
+  // if (typeof response.status === 'undefined') {
+  // }
   if (!response.status || !validateStatus || validateStatus(response.status)) {
     resolve(response);
   } else {
-    reject(AxiosError(
-      'Request failed with status code ' + response.status,
-      response.config,
-      null,
-      response.request,
-      response
-    ));
+    reject(
+      new AxiosError(
+        'Request failed with status code ' + response.status,
+        [AxiosError.ERR_BAD_REQUEST, AxiosError.ERR_BAD_RESPONSE][
+          Math.floor(response.status / 100) - 4
+        ],
+        response.config,
+        response.request,
+        response,
+      ),
+    );
   }
-};
+}
 
 // 默认的 config.validateStatus
 // function validateStatus(status) {

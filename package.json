@@ -14,14 +14,68 @@
   "module": "./esm/index.js",
   "types": "./esm/index.d.ts",
   "sideEffects": false,
-  "scripts": {},
   "files": [
     "esm",
     "lib",
     "dist"
   ],
-  "devDependencies": {
-    "@types/node": "^17.0.23"
+  "scripts": {
+    "release": "ts-node scripts/release.ts",
+    "ci-publish": "ts-node scripts/publishCI.ts",
+    "preinstall": "npx only-allow pnpm",
+    "format": "prettier --write .",
+    "eslint": "eslint --cache --ext .ts ./packages/**/src",
+    "eslint:fix": "eslint --fix --cache --ext .ts ./packages/**/src",
+    "test": "run-s test-serve",
+    "test-serve": "jest"
   },
-  "ava": {}
+  "devDependencies": {
+    "@deepjs/lint": "^0.0.16",
+    "@types/node": "^17.0.31",
+    "@typescript-eslint/eslint-plugin": "^5.22.0",
+    "@typescript-eslint/parser": "^5.22.0",
+    "conventional-changelog-cli": "^2.2.2",
+    "eslint": "^8.14.0",
+    "eslint-define-config": "^1.4.0",
+    "lint-staged": "^12.4.1",
+    "npm-run-all": "^4.1.5",
+    "picocolors": "^1.0.0",
+    "prettier": "^2.6.2",
+    "simple-git-hooks": "^2.7.0",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.4"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm exec lint-staged --concurrent false",
+    "commit-msg": "pnpm exec ts-node scripts/verifyCommit.ts $1"
+  },
+  "lint-staged": {
+    "*": [
+      "prettier --write --ignore-unknown"
+    ],
+    "packages/*/{src,types}/**/*.ts": [
+      "eslint --ext .ts"
+    ],
+    "packages/**/*.d.ts": [
+      "eslint --ext .ts"
+    ]
+  },
+  "engines": {
+    "node": ">=16",
+    "pnpm": ">=6"
+  },
+  "packageManager": "pnpm@6.32.11",
+  "pnpm": {
+    "overrides": {
+      "vite": "workspace:*",
+      "@vitejs/plugin-vue": "workspace:*"
+    },
+    "packageExtensions": {
+      "postcss-load-config": {
+        "peerDependencies": {
+          "postcss": "*"
+        }
+      }
+    }
+  }
 }

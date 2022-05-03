@@ -215,7 +215,7 @@ Error: {
 ```js
 // https://github.com/axios/axios/blob/master/lib/adapters/README.md#axios--adapters
 
-import settle from 'axios/lib/core/settle'
+import settle from 'axios/lib/core/settle';
 
 export default function myAdapter(config) {
   // At this point:
@@ -226,7 +226,7 @@ export default function myAdapter(config) {
   // Make the request using config provided
   // Upon response settle the Promise
 
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     // example
     // var requestData
     // var request = new XMLHttpRequest();
