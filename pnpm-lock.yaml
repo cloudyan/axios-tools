@@ -20,6 +20,8 @@ importers:
       npm-run-all: ^4.1.5
       picocolors: ^1.0.0
       prettier: ^2.6.2
+      prompts: ^2.4.2
+      semver: ^7.3.7
       simple-git-hooks: ^2.7.0
       ts-node: ^10.7.0
       typescript: ^4.6.4
@@ -35,6 +37,8 @@ importers:
       npm-run-all: 4.1.5
       picocolors: 1.0.0
       prettier: 2.6.2
+      prompts: 2.4.2
+      semver: 7.3.7
       simple-git-hooks: 2.7.0
       ts-node: 10.7.0_5f3e12794cebfbf3197131903b74d233
       typescript: 4.6.4
@@ -8584,6 +8588,14 @@ packages:
     engines: { node: '>=0.10.0' }
     dev: true
 
+  /kleur/3.0.3:
+    resolution:
+      {
+        integrity: sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==,
+      }
+    engines: { node: '>=6' }
+    dev: true
+
   /known-css-properties/0.11.0:
     resolution:
       {
@@ -11036,6 +11048,17 @@ packages:
     engines: { node: '>=0.4.0' }
     dev: true
 
+  /prompts/2.4.2:
+    resolution:
+      {
+        integrity: sha512-NxNv/kLguCA7p3jE8oL2aEBsrJWgAakBpgmgK6lpPWV+WuOmY6r2/zbAVnP+T8bQlA0nzHXSJSJW0Hq7ylaD2Q==,
+      }
+    engines: { node: '>= 6' }
+    dependencies:
+      kleur: 3.0.3
+      sisteransi: 1.0.5
+    dev: true
+
   /prop-types/15.8.1:
     resolution:
       {
@@ -12106,6 +12129,13 @@ packages:
       diff: 4.0.2
       nise: 4.1.0
       supports-color: 7.2.0
+    dev: true
+
+  /sisteransi/1.0.5:
+    resolution:
+      {
+        integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==,
+      }
     dev: true
 
   /slash/2.0.0:
