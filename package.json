@@ -14,21 +14,14 @@
   "module": "./esm/index.js",
   "types": "./esm/index.d.ts",
   "sideEffects": false,
-  "scripts": {
-
-  },
+  "scripts": {},
   "files": [
     "esm",
     "lib",
     "dist"
   ],
-  "dependencies": {
-  },
-  "peerDependencies": {
-  },
   "devDependencies": {
-
+    "@types/node": "^17.0.23"
   },
-  "ava": {
-  }
+  "ava": {}
 }

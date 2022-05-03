@@ -14,8 +14,8 @@ function genConfig(minimize = false) {
 	return {
 		input: './src/index.ts',
 		output: {
-			name: 'axios-taro-adapter',
-			file: minimize ? './dist/axios-taro-adapter.min.js' : './dist/axios-taro-adapter.js',
+			name: 'index',
+			file: minimize ? './dist/index.min.js' : './dist/axios-uniapp-adapter.js',
 			format: 'umd',
 			sourcemap: true,
 		},

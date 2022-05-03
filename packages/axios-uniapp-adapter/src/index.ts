@@ -3,11 +3,13 @@
 // https://uniapp.dcloud.net.cn/api/request/request.html
 
 // import url from 'url'
+// @ts-ignore
 import {
   AxiosRequestConfig,
   AxiosPromise,
   // AxiosResponse,
 } from 'axios'
+
 // import utils from 'axios/lib/utils'
 import settle from 'axios/lib/core/settle'
 // import cookies from 'axios/lib/helpers/cookies'
@@ -16,8 +18,9 @@ import buildFullPath from 'axios/lib/core/buildFullPath'
 // import parseHeaders from 'axios/lib/helpers/parseHeaders'
 // import isURLSameOrigin from 'axios/lib/helpers/isURLSameOrigin'
 // import transitionalDefaults from 'axios/lib/defaults/transitional'
-// import AxiosError from 'axios/lib/core/AxiosError'
+import AxiosError from 'axios/lib/core/AxiosError'
 // import CanceledError from 'axios/lib/cancel/CanceledError'
+// import parseProtocol from 'axios/lib/helpers/parseProtocol'
 
 type RequestMethod =
   | 'GET'
@@ -85,7 +88,7 @@ export default function createAdapter(customRequest: any){
     // Make the request using config provided
     // Upon response settle the Promise
 
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
       let requestTask
       const requestData = config.data
       const requestHeaders = config.headers
@@ -97,15 +100,20 @@ export default function createAdapter(customRequest: any){
         data: requestData,
         method: requestMethod as RequestMethod,
         header: requestHeaders, // uniapp 使用的 header
-        complete: (res: any) => {
-          // const status = res.statusCode || res.status
+        complete: (httpResponse: any) => {
+          console.log('origin taro httpConfig', config)
+          console.log('origin taro httpResponse', httpResponse)
+
+          // net::ERR_PROXY_CONNECTION_FAILED {errMsg: "request:fail "}
+
+          // const status = httpResponse.statusCode || httpResponse.status
           const response = {
-            data: res.data,
-            status: res.statusCode || res.status,
-            statusText: res.errMsg || '',
-            headers: res.header || res.headers,
+            data: httpResponse.data, // apiResponse
+            status: httpResponse.statusCode || httpResponse.status,
+            statusText: httpResponse.errMsg || '',
+            headers: httpResponse.header || httpResponse.headers,
             config: config,
-            profile: res.profile,
+            profile: httpResponse.profile,
             request,
           } as AxiosResponse
           settle(resolve, reject, response);
@@ -113,6 +121,7 @@ export default function createAdapter(customRequest: any){
           // if ([11, 12, 13, 14, 19, 20].indexOf(err.statusCode) > -1) {}
           // request:fail abort
           // timeout
+          // {status: undefined, statusText: "request:fail "}
         },
       })
 
@@ -126,3 +135,28 @@ export default function createAdapter(customRequest: any){
 }
 
 // 需要确认返回的数据格式
+
+function settle(resolve, reject, response) {
+  var validateStatus = response.config.validateStatus;
+
+  // TODO: 有可能 response.status 不存在，API 服务不通时
+  if (typeof response.status === 'undefined') {
+
+  }
+  if (!response.status || !validateStatus || validateStatus(response.status)) {
+    resolve(response);
+  } else {
+    reject(AxiosError(
+      'Request failed with status code ' + response.status,
+      response.config,
+      null,
+      response.request,
+      response
+    ));
+  }
+};
+
+// 默认的 config.validateStatus
+// function validateStatus(status) {
+//   return status >= 200 && status < 300;
+// }
