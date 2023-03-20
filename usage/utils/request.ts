@@ -41,6 +41,7 @@ if (process.env.NODE_ENV === 'development') {
 // client.interceptors.response.use(response => {
 //   return response.data
 // })
+
 // 推荐使用函数代替拦截器 ✅
 export async function request(config?: AxiosRequestConfig) {
   // 你的业务逻辑封装
@@ -58,9 +59,10 @@ export async function request(config?: AxiosRequestConfig) {
   // 兼容各种api返回  返回统一格式
   await instance
     .request(config)
+    // .then(res: axiosResponse => res)
     .catch((err) => err)
     .then((res) => {
-      // 请求成功 读取res
+      // 请求成功 读取res 本质为 axiosResponse
       // 请求失败 读取res?.response
       console.log('request:');
       const { data, status, statusText } = res?.isAxiosError
@@ -94,21 +96,21 @@ export async function request(config?: AxiosRequestConfig) {
   }
 
   // api 错误提示
-  if (formatRes.error && !config.ignoreErrHandle) {
-    if (Number(formatRes.data?.errorLevel) === 1) {
-      // 触发全局modal显示
-      Taro.eventCenter.trigger(Taro.Current?.page?.route, {
-        msg: formatRes.msg,
-      });
-    } else {
-      formatRes?.msg &&
-        Taro.showToast({
-          title: formatRes.msg,
-          icon: 'none',
-          mask: true,
-        });
-    }
-  }
+  // if (formatRes.error && !config.ignoreErrHandle) {
+  //   if (Number(formatRes.data?.errorLevel) === 1) {
+  //     // 触发全局modal显示
+  //     Taro.eventCenter.trigger(Taro.Current?.page?.route, {
+  //       msg: formatRes.msg,
+  //     });
+  //   } else {
+  //     formatRes?.msg &&
+  //       Taro.showToast({
+  //         title: formatRes.msg,
+  //         icon: 'none',
+  //         mask: true,
+  //       });
+  //   }
+  // }
 
   return formatRes;
 }
@@ -117,6 +119,7 @@ export async function request(config?: AxiosRequestConfig) {
 //   return request(url, { ...config, adapter: jsonpAdapter })
 // }
 
+// 使用 CancelToken
 const CancelToken = axios.CancelToken;
 export function withCancelToken(fetcher) {
   let abort;
@@ -136,6 +139,23 @@ export function withCancelToken(fetcher) {
   }
 
   return [send, cancel];
+}
+
+// 使用 AbortController 控制
+const controller = new AbortController();
+export function withAbortController(fetcher) {
+  // let abort;
+
+  function send(data, config) {
+    controller.abort(); // 主动取消
+
+    return fetcher(data, {
+      ...config,
+      signal: controller.signal,
+    });
+  }
+
+  return [send, controller.abort];
 }
 
 export default instance;

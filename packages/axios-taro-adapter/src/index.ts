@@ -106,6 +106,7 @@ export default function createAdapter(customRequest: any) {
 
           // net::ERR_PROXY_CONNECTION_FAILED {errMsg: 'request:fail '}
 
+          // axiosResponse: https://www.axios-http.cn/docs/res_schema
           // const status = httpResponse.statusCode || httpResponse.status
           const response = {
             data: httpResponse.data, // apiResponse
