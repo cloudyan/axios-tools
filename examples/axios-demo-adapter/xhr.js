@@ -1,3 +1,5 @@
+// 使用 XHR 实现请求
+
 import url from 'url';
 import utils from 'axios/lib/utils';
 import settle from 'axios/lib/core/settle';

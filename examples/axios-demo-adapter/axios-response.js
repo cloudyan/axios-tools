@@ -1,4 +1,4 @@
-{
+export const axiosResponse = {
   // `data` 由服务器提供的响应
   data: {},
 
@@ -19,5 +19,5 @@
   // `request` 是生成此响应的请求
   // 在node.js中它是最后一个ClientRequest实例 (in redirects)，
   // 在浏览器中则是 XMLHttpRequest 实例
-  request: {}
-}
+  request: {},
+};

@@ -142,12 +142,13 @@ export function withCancelToken(fetcher) {
 }
 
 // 使用 AbortController 控制
-const controller = new AbortController();
 export function withAbortController(fetcher) {
+  // 共用，使用该方式控制的流程，自动取消之前的重复请求
+  const controller = new AbortController();
   // let abort;
 
   function send(data, config) {
-    controller.abort(); // 主动取消
+    controller.abort(); // 自动取消
 
     return fetcher(data, {
       ...config,

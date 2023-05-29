@@ -10,6 +10,18 @@ axios 工具箱
 - axios-throttle-adapter-enhancer
 - axios-cache-adapter-enhancer
 - axios-session-adapter-enhancer
+- axios-fetch-adapter
+
+除了适配器之外，还有请求优化相关的逻辑，功能场景如下：
+
+1. 重复请求
+2. 高频请求结果缓存
+3. 请求状态自动管理
+4. 请求失败重试
+5. 请求参数加密
+6. 自动刷新 token
+7. 弱网如何处理请求
+8. 跨页面操作、刷新数据
 
 custom adapter
 
