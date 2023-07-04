@@ -2,26 +2,34 @@
 
 axios 工具箱
 
-功能列表
+### 功能列表
 
+- axios-cache 响应缓存
+- axios-retry 失败重试
+- axios-cancel 取消(中止)请求
+- axios-jsonp 支持 JSONP
+- axios-debounce 防抖 等待前面请求完成
+- axios-throttle 节流 保留第一次
+- axios-merge 重复请求合并，仅请求一次
+- axios-loading 全局 loading
+- axios-env 规范多环境配置
+- axios-mock mock 请求
+- axios-logger 日志采集
+- axios-sign 参数签名/加密
+- axios-send-beacon 封装 sendBeacon
+- axios-refresh-token 自动刷新失效 token
+
+### 适配器
+
+- axios-fetch-adapter fetch 适配器
+- axios-mini-adapter 小程序适配器
 - axios-taro-adapter
 - axios-uniapp-adapter
-- axios-retry-adapter-enhancer
-- axios-throttle-adapter-enhancer
-- axios-cache-adapter-enhancer
-- axios-session-adapter-enhancer
-- axios-fetch-adapter
 
-除了适配器之外，还有请求优化相关的逻辑，功能场景如下：
+除了以上功能，还有请求优化相关的逻辑，功能场景如下：
 
-1. 重复请求
-2. 高频请求结果缓存
-3. 请求状态自动管理
-4. 请求失败重试
-5. 请求参数加密
-6. 自动刷新 token
-7. 弱网如何处理请求
-8. 跨页面操作、刷新数据
+1. 弱网如何处理请求
+2. 跨页面操作、刷新数据
 
 custom adapter
 

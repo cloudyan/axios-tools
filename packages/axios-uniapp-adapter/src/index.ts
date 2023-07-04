@@ -99,8 +99,8 @@ export default function createAdapter(customRequest: any) {
         method: requestMethod as RequestMethod,
         header: requestHeaders, // uniapp 使用的 header
         complete: (httpResponse: any) => {
-          console.log('origin taro httpConfig', config);
-          console.log('origin taro httpResponse', httpResponse);
+          console.log('origin uniapp httpConfig', config);
+          console.log('origin uniapp httpResponse', httpResponse);
 
           // net::ERR_PROXY_CONNECTION_FAILED {errMsg: 'request:fail '}
 

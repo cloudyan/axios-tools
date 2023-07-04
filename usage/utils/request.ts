@@ -1,17 +1,18 @@
 /**
  * 业务封装
- *
- * 响应拦截器不要返回api 数据，依然返回 AxiosResponse 对象
- *
+ * 响应拦截器不要返回改为返 api 数据，要依然返回 AxiosResponse 对象
  */
 
-import axios, { AxiosRequestConfig } from 'axios';
+import axios from 'axios';
+import type { AxiosRequestConfig } from 'axios';
 // import Taro from '@tarojs/taro';
 // import axiosRetry from 'axios-retry'
 // import jsonpAdapter from 'axios-jsonp'
-import conf from '@/config/index';
 
-console.log('conf', conf);
+const conf = {
+  apiBaseUrl: '',
+  authCodes: [100401],
+};
 
 // axios.defaults.adapter = createTaroAdapter(Taro.request)
 
@@ -21,7 +22,7 @@ const instance = axios.create({
 });
 
 // 设置token
-// instance.defaults.headers.common['Authorization'] = 'I am a token';
+// instance.defaults.headers.common['Authorization'] = 'myToken';
 
 // 安装 retry 插件
 // 当请求失败后，自动重新请求，只有3次失败后才真正失败
@@ -90,7 +91,7 @@ export async function request(config?: AxiosRequestConfig) {
     });
 
   // 触发登录
-  if (formatRes.code === conf.authCode) {
+  if (conf.authCodes.includes(formatRes.code)) {
     // goLogin();
     return;
   }
