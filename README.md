@@ -4,20 +4,26 @@ axios 工具箱
 
 ### 功能列表
 
-- axios-cache 响应缓存
-- axios-retry 失败重试
-- axios-cancel 取消(中止)请求
-- axios-jsonp 支持 JSONP
-- axios-debounce 防抖 等待前面请求完成
-- axios-throttle 节流 保留第一次
-- axios-merge 重复请求合并，仅请求一次
-- axios-loading 全局 loading
-- axios-env 规范多环境配置
-- axios-mock mock 请求
-- axios-logger 日志采集
-- axios-sign 参数签名/加密
-- axios-send-beacon 封装 sendBeacon
-- axios-refresh-token 自动刷新失效 token
+```bash
+./
+├── axios-cache # 响应缓存
+├── axios-cancel # 取消(中止)请求
+├── axios-debounce # 防抖 等待前面请求完成
+├── axios-env # 规范多环境配置
+├── axios-loading # 全局 loading
+├── axios-merge # 重复请求合并，仅请求一次
+├── axios-logger # 日志采集
+├── axios-mock # mock 请求
+├── axios-refresh-token # 自动刷新失效 token
+├── axios-retry # 失败重试
+├── axios-send-beacon # 封装 sendBeacon
+├── axios-sign # 参数签名/加密
+├── axios-throttle # 节流 保留第一次
+├── axios-fetch-adapter
+├── axios-mini-adapter
+├── axios-taro-adapter
+└── axios-uniapp-adapter
+```
 
 ### 适配器
 
